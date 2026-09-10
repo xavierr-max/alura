@@ -2,46 +2,68 @@
 
 var diasDaSemana = new DiasDaSemana();
 
-foreach (var dia in diasDaSemana)
+PercorrendoComEnumerator();
+
+void PercorrendoComEnumerator()
 {
-    System.Console.WriteLine(dia);
+    var enumerator = diasDaSemana.GetEnumerator();
+    while (enumerator.MoveNext())
+    {
+        var dia = enumerator.Current;
+        Console.WriteLine(dia);
+    }
 }
 
-
-
-class DiasDaSemanaEnumerator : IEnumerator<string>
+void PercorrendoDiasDaSemana()
 {
-    private int posicao = -1;
-    private string[] dias =
+    foreach (var dia in diasDaSemana)
     {
-        "Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"
-    };
-
-    public string Current => dias[posicao];
-
-    object IEnumerator.Current => Current;
-
-    public void Dispose()
-    {
-    }
-
-    public bool MoveNext()
-    {
-        posicao++;
-        return posicao < dias.Length;
-    }
-
-    public void Reset()
-    {
-        posicao = -1;
+        Console.WriteLine(dia);
     }
 }
+
+// yield: utiliza do gerenciamento de memória do .NET para criar essa classe abaixo
+//
+// class DiasDaSemanaEnumerator : IEnumerator<string>
+// {
+//     private int posicao = -1;
+//
+//     private string[] dias =
+//     {
+//         "Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"
+//     };
+//
+//     public string Current => dias[posicao];
+//
+//     object IEnumerator.Current => Current;
+//
+//     public void Dispose()
+//     {
+//     }
+//
+//     public bool MoveNext()
+//     {
+//         posicao++;
+//         return posicao < dias.Length;
+//     }
+//
+//     public void Reset()
+//     {
+//         posicao = -1;
+//     }
+// }
 
 class DiasDaSemana : IEnumerable<string>
 {
     public IEnumerator<string> GetEnumerator()
     {
-        return new DiasDaSemanaEnumerator();
+        yield return "Domingo";
+        yield return "Segunda";
+        yield return "Terça";
+        yield return "Quarta";
+        yield return "Quinta";
+        yield return "Sexta";
+        yield return "Sábado";
     }
 
     IEnumerator IEnumerable.GetEnumerator()
