@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ByteBankIO
 {
-    public class Cliente
+    public class Cliente (string nome)
     {
-        public string Nome { get; set; }
-        public string CPF { get; set; }
-        public string Profissao { get; set; }
+        public string Nome { get; set; } = nome;
+        public string CPF { get; set; } = string.Empty;
+        public string Profissao { get; set; } = string.Empty;
     }
 }

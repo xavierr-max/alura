@@ -11,7 +11,7 @@ namespace ByteBankIO
         public int Numero { get; }
         public int Agencia { get; }
         public double Saldo { get; private set; }
-        public Cliente Titular { get; set; }
+        public Cliente Titular { get; set; } = null!;
 
         public ContaCorrente(int agencia, int numero)
         {
