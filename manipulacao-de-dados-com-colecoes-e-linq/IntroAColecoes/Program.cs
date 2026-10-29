@@ -2,97 +2,79 @@
 
 var diasDaSemana = new DiasDaSemana();
 
-var pares = NumerosParesComYield();
-var contador = 0;
-foreach (var par in pares)
+var carrinho = new List<Produto>()
 {
-    contador++;
-    Console.WriteLine(par);
-    if (contador > 200) break;
+    new() { Nome = "Leite", Preco = 7.89 },
+    new() { Nome = "Manteiga", Preco = 3.45 }
+};
+
+// diasDaSemana[0];
+// carrinho[0];
+
+foreach (var dia in diasDaSemana) // IEnumerable<string> 
+{
+    Console.WriteLine(dia);
 }
 
-IEnumerable<int> NumerosParesSemYield(int limite)
+void PercorrendoComFor()
 {
-    var lista = new List<int>();
-    for (var i = 0; i < limite; i++)
+    for (int i = 0; i < carrinho.Count; i++)
     {
-        System.Console.WriteLine($"Processando elemento {i}...");
-        lista.Add(i * 2);
-    }
-    return lista;
-}
-
-IEnumerable<int> NumerosParesComYield()
-{
-    var i = 0;
-    while (true)
-    {
-        Console.WriteLine($"Processando elemento {i}...");
-        yield return i * 2;
-        if (i > 100)
-        {
-            System.Console.WriteLine("Saindo do Enumerator...");
-            yield break;
-        }
-        i++;
+        var produto = carrinho[i];
+        Console.WriteLine($"Produto: {produto.Nome}");
     }
 }
 
+void PercorrendoComForEach()
+{
+    foreach (var produto in carrinho)
+    {
+        Console.WriteLine($"Produto: {produto.Nome}");
+    }
+}
 
-// class DiasDaSemanaEnumerator : IEnumerator<string>
-// {
-//     private int posicao = -1;
-//     private string[] dias =
-//     {
-//         "Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"
-//     };
+class Produto
+{
+    public string Nome { get; set; }
+    public double Preco { get; set; }
+}
 
-//     public string Current => dias[posicao];
+class DiasDaSemanaEnumerator : IEnumerator<string>
+{
+    private int posicao = -1;
+    private string[] dias =
+    {
+        "Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"
+    };
+    public string Current => dias[posicao];
+    object? IEnumerator.Current => Current;
+    
+    public bool MoveNext()
+    {
+        posicao++;
+        return posicao < dias.Length;
+    }
 
-//     object IEnumerator.Current => Current;
+    public void Reset()
+    {
+        posicao = -1;
+    }
 
-//     public void Dispose()
-//     {
-//     }
 
-//     public bool MoveNext()
-//     {
-//         posicao++;
-//         return posicao < dias.Length;
-//     }
-
-//     public void Reset()
-//     {
-//         posicao = -1;
-//     }
-// }
+    public void Dispose()
+    {
+    }
+}
 
 class DiasDaSemana : IEnumerable<string>
 {
     public IEnumerator<string> GetEnumerator()
     {
-        // posicao = -1
-        //MoveNext(): posicao = 0
-        yield return "Domingo"; // Current: array[posicao]
-        //MoveNext(): posicao = 1
-        yield return "Segunda-feira"; // Current
-        //MoveNext(): posicao = 2
-        yield return "Terça-feira"; // Current
-        yield return "Quarta-feira";
-        yield return "Quinta-feira";
-        yield return "Sexta-feira";
-        yield return "Sábado";
+        return new DiasDaSemanaEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
     }
-}
-
-public class Produto
-{
-    public required string Id { get; set; }
-    public required string Nome { get; set; }
-    public decimal? Preco { get; set; }
 }
